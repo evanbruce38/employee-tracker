@@ -54,7 +54,7 @@ const viewDepartments = () => {
     const sql = `SELECT * FROM department`
 
     connection.query(sql, (err, res) => {
-        iff (err) console.log({ error: err.message });
+        if (err) console.log({ error: err.message });
         console.table(res);
         mainPrompt();
     });
@@ -66,7 +66,7 @@ const viewRoles = () => {
                  LEFT JOIN department ON role.department_id = department_id`;
 
     connection.query(sql, (err, res) => {
-        iff (err) console.log({ error: err.message });
+        if (err) console.log({ error: err.message });
         console.table(res);
         mainPrompt();
     });
@@ -153,8 +153,90 @@ function addRole() {
     const sql = 'INSERT INTO role SET ?';
 
     connection.query(sql, res, function(err, result) {
-        iff (err) throw err;
+        if (err) throw err;
         console.log('Role added!')
+        mainPrompt();
+    });
+});
+};
+
+function addEmployee() {
+    return inquirer.prompt([{
+        type: 'input',
+        name: 'first_name',
+        message: 'What is the first name of this employee?'
+    },
+    {
+        type: 'input',
+        name: 'last_name',
+        message: 'What is the last name of this employee?'
+    },
+    {
+        type: 'list',
+        name: 'role',
+        message: 'What is the role of this employee?',
+        choices: ['Salesperson', 'Sofftware Engineer', 'Accountant', 'Lawyer']
+    },
+    {
+        type: 'list',
+        name: 'manager_id',
+        message: 'Who is the manager of this employee?',
+        choices: ['Nick Saban', 'Brian Kelly', 'Sam Pittmam', 'Lane Kiffin']
+    }
+])
+.then(res => {
+    console.log(res);
+    const roleIds = [
+        {
+            name: 'salesperson',
+            id: 2
+        },
+        {
+            name: 'Software Engineer',
+            id: 4
+        },
+        {
+            name: 'Accountant',
+            id: 6
+        },
+        {
+            name: 'Lawyer',
+            id: 8
+        }
+    ]
+    const roleObj = roleIds.find(r => r.name.toLowerCase() == res.role.toLowerCase())
+
+    res.role_id = roleObj.id;
+    delete res.role;
+
+    const managerIds = [
+        {
+            name: 'Nick Saban',
+            id: 1
+        },
+        {
+            name: 'Brian Kelly',
+            id: 3
+        },
+        {
+            name: 'Sam Pittman',
+            id: 5
+        },
+        {
+            name: 'Lane Kiffin',
+            id: 7
+        }
+    ]
+
+const managerObj = managerIds.find(m => m.name.toLowerCase() == res.manager_id.toLowerCase())
+
+    res.manager_id = managerObj.id;
+    delete res.manager;
+
+    const sql = 'INSERT INTO employee SET ?';
+    connection.query(sql, res, function(err, result) {
+        if (err) throw err;
+        console.log('Employee added!')
         mainPrompt();
     });
 });
