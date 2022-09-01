@@ -241,3 +241,25 @@ const managerObj = managerIds.find(m => m.name.toLowerCase() == res.manager_id.t
     });
 });
 };
+
+const updateRole = (roleID, employeeId) => {
+    inquirer.prompt([{
+        type: 'list',
+        name: 'employee',
+        message: "Which employee's role would you like to update?",
+        choices: ['Lane Kiffin', 'Kirby Smart', 'Mike Leach', 'Nick Saban', 'Jimbo Fisher', 'Brian Kelly', 'Sam Pittman', 'Josh Huepel']
+    }
+    ])
+    .then(res => {
+        console.log(res);
+        const sql = 'UPDATE employee SET role_id = ? WHERE id = ?';
+        connection.query(sql, [roleId, employeeId], (err, result) => {
+            if (err) return console.log({ error: err.message });
+            console.log(`Employee's role updated!`)
+            mainPrompt();
+            return;
+        });
+    });
+};
+
+mainPrompt();
