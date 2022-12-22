@@ -7,13 +7,21 @@
 
   ## Table of Contents
 
+  * [Technologies Used](#technologies-used)
   * [Usage](#usage)
   * [License Info](#license-info)
  
+  ### Technologies Used
+
+  * Inquirer
+  * Jest
+  * mySQL
+  * JavaScript
+  * node.JS
 
   ### Usage
 
-  * This app is run through the command line by inputting "node index.js"
+  * This app is run through the command line by inputting "node index.js" and inputting information about your team when prompted.
 
   ### License Info
 
